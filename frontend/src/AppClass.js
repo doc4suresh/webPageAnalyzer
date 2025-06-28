@@ -1,5 +1,4 @@
 import React, {Fragment, useState} from 'react';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function AppClass() {
@@ -18,10 +17,9 @@ function AppClass() {
         setLoading(true);
         setResult(null);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/analyze`, {
-                method: 'POST',
+            const response = await fetch(`${API_BASE_URL}/analyze?url=${encodeURIComponent(url)}`, {
+                method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url }),
             });
             if (!response.ok) {
                 const err = await response.json();
