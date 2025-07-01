@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	util "github.com/doc4suresh/webPageAnalyzer/internal/Util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +18,12 @@ func analyzeHandler(ctx *gin.Context) {
 	if url == "" {
 		log.Fatal("Missing 'url' query parameter")
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Missing 'url' query parameter"})
+		return
+	}
+
+	if !util.ValidateURL(url) {
+		log.Fatal("Invalid URL format")
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid URL format"})
 		return
 	}
 
