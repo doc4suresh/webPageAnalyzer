@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	util "github.com/doc4suresh/webPageAnalyzer/internal/Util"
+	scaper "github.com/doc4suresh/webPageAnalyzer/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,17 +17,22 @@ func analyzeHandler(ctx *gin.Context) {
 	url := ctx.Query("url")
 
 	if url == "" {
-		log.Fatal("Missing 'url' query parameter")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Missing 'url' query parameter"})
+		log.Print("Missing 'url' query parameter")
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Missing 'url' query parameter"})
 		return
 	}
 
 	if !util.ValidateURL(url) {
-		log.Fatal("Invalid URL format")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid URL format"})
+		log.Print("Invalid URL format")
+
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Invalid URL format\n" +
+			"Please provide a valid URL like\n" +
+			"https://www.example.com\n" +
+			"or\n" +
+			"http//www.example.com"})
+
 		return
 	}
 
-	// Return the extracted URL in the JSON response
-	ctx.JSON(http.StatusOK, gin.H{"Message": "Got the url as " + url})
+	scaper.Scrape(ctx, url)
 }
