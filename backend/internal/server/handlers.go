@@ -29,7 +29,7 @@ func analyzeHandler(ctx *gin.Context) {
 			"Please provide a valid URL like\n" +
 			"https://www.example.com\n" +
 			"or\n" +
-			"http//www.example.com"})
+			"http://www.example.com"})
 
 		return
 	}
