@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	util "github.com/doc4suresh/webPageAnalyzer/internal/Util"
 	scaper "github.com/doc4suresh/webPageAnalyzer/internal/service"
+	util "github.com/doc4suresh/webPageAnalyzer/internal/util"
 	"github.com/gin-gonic/gin"
 )
 

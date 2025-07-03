@@ -95,12 +95,12 @@ function AppClass() {
                                     <table className="table table-borderless align-middle mb-0">
                                         <tbody>
                                             <tr>
-                                                <th className="text-secondary w-25">Title</th>
-                                                <td>{result.title || "No Title Found"}</td>
-                                            </tr>
-                                            <tr>
                                                 <th className="text-secondary">URL</th>
                                                 <td><a href={result.url} target="_blank" rel="noopener noreferrer">{result.url}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th className="text-secondary w-25">Title</th>
+                                                <td>{result.title || "No Title Found"}</td>
                                             </tr>
                                             <tr>
                                                 <th className="text-secondary">HTML Version</th>
