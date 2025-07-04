@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
 
 function AppClass() {
     const [url, setUrl] = useState('');
