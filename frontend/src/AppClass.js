@@ -7,6 +7,7 @@ function AppClass() {
     const [error, setError] = useState('');
     const API_BASE_URL = process.env.REACT_APP_BACKEND_API_URL;
 
+    /* Backend API Call */
     const handleAnalyze = async () => {
         if (!url) {
             setError('Please enter a URL.');
@@ -45,7 +46,7 @@ function AppClass() {
                 </div>
             </nav>
 
-            {/* Main Content */}
+            {/* Analyer Card */}
             <div className="container d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
                 {/* Input Card */}
                 <div className="w-100" style={{ maxWidth: 500 }}>
@@ -99,15 +100,15 @@ function AppClass() {
                                             </tr>
                                             <tr>
                                                 <th className="text-secondary w-25">Title</th>
-                                                <td>{result.title || "No Title Found"}</td>
+                                                <td>{result.title || <span className="text-muted">No Title Found</span>}</td>
                                             </tr>
                                             <tr>
                                                 <th className="text-secondary">HTML Version</th>
-                                                <td>{result.htmlVersion || "Unknown"}</td>
+                                                <td>{result.HTMLVersion || <span className="text-muted">No HTML Version Found</span>}</td>
                                             </tr>
                                             <tr>
                                                 <th className="text-secondary">Login Form</th>
-                                                <td>{result.isLogingForm ? <span className="badge bg-success">Yes</span> : <span className="badge bg-secondary">No</span>}</td>
+                                                <td>{result.IsLoginForm ? <span className="badge bg-success">Yes</span> : <span className="text-muted">No Login Form Found</span>}</td>
                                             </tr>
                                             <tr>
                                                 <th className="text-secondary">Headings</th>
@@ -115,50 +116,26 @@ function AppClass() {
                                                     {result.headCount && Object.keys(result.headCount).length > 0 ? (
                                                         <div className="d-flex flex-wrap gap-2">
                                                             {Object.entries(result.headCount).map(([tag, count]) => (
-                                                                <span className="badge bg-info text-dark" key={tag}>{tag.toUpperCase()}: {count}</span>
+                                                                <span className="badge bg-warning text-dark" key={tag}>{tag.toUpperCase()}: {count}</span>
                                                             ))}
                                                         </div>
                                                     ) : (
-                                                        <span className="text-muted">None</span>
+                                                        <span className="text-muted">None Headings Found</span>
                                                     )}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th className="text-secondary">Accessible Links</th>
                                                 <td>
-                                                    {result.AccessbleLinks && result.AccessbleLinks.length > 0 ? (
-                                                        <div style={{ maxHeight: 100, overflowY: "auto" }}>
-                                                            <ul className="list-group list-group-flush small">
-                                                                {result.AccessbleLinks.map((link, idx) => (
-                                                                    <li className="list-group-item px-2 py-1 border-0" key={idx}>
-                                                                        <a href={link.startsWith("http") ? link : result.url + link} target="_blank" rel="noopener noreferrer" className="text-decoration-none">
-                                                                            {link}
-                                                                        </a>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                    ) : (
-                                                        <span className="text-muted">None</span>
-                                                    )}
+                                                    {result.AccessibleLinks > 0 ? result.AccessibleLinks 
+                                                    : <span className="text-muted">No Accessible Links Found</span>}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th className="text-secondary">Inaccessible Links</th>
                                                 <td>
-                                                    {result.InaccessbleLinks && result.InaccessbleLinks.length > 0 ? (
-                                                        <div style={{ maxHeight: 70, overflowY: "auto" }}>
-                                                            <ul className="list-group list-group-flush small">
-                                                                {result.InaccessbleLinks.map((link, idx) => (
-                                                                    <li className="list-group-item px-2 py-1 border-0" key={idx}>
-                                                                        {link}
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                    ) : (
-                                                        <span className="text-muted">None</span>
-                                                    )}
+                                                    {result.InAccessibleLinks > 0 ? result.InAccessibleLinks 
+                                                    : <span className="text-muted">No Inaccessible Links Found</span>}
                                                 </td>
                                             </tr>
                                         </tbody>

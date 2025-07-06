@@ -5,7 +5,7 @@ import "testing"
 const testURL = "https://www.example.com"
 
 func TestCheckConnection(t *testing.T) {
-	err := CheckConnection(testURL)
+	err := validateURL(testURL)
 
 	if err != nil {
 		t.Errorf("CheckConnection(%q) returned error: %v; want no error", testURL, err)
@@ -13,7 +13,7 @@ func TestCheckConnection(t *testing.T) {
 }
 
 func TestGetWebPageInfo(t *testing.T) {
-	info, err := GetWebPageInfo(testURL)
+	info, err := analyzeWebPage(testURL)
 
 	if err != nil {
 		t.Errorf("GetWebPageInfo(%q) returned error: %v; want no error", testURL, err)
