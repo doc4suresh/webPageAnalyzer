@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"strconv"
 	"time"
@@ -12,14 +12,22 @@ import (
 
 // Scrape performs web page analysis and returns the results
 func Scrape(url string) (*WebPageInfo, error) {
+	slog.Info("Validating the URL...")
+
 	if err := validateURL(url); err != nil {
 		return nil, fmt.Errorf("connection failed: %w", err)
 	}
+
+	slog.Info("URL validate completed!")
+
+	slog.Info("Analyzing the Webpage...")
 
 	info, err := analyzeWebPage(url)
 	if err != nil {
 		return nil, fmt.Errorf("analysis failed: %w", err)
 	}
+
+	slog.Info("Webpage analyze completed!")
 
 	return info, nil
 }
@@ -34,7 +42,7 @@ func validateURL(url string) error {
 	// Set up error handling
 	collector.OnError(func(r *colly.Response, err error) {
 		capturedError = createSpecificError(r.StatusCode, r.Request.URL.String(), err)
-		log.Printf("HTTP Error %d for %s: %v", r.StatusCode, r.Request.URL, err)
+		slog.Error("HTTP Error", "ERROR-Code", r.StatusCode, "URL", r.Request.URL, slog.Any("Error", err))
 	})
 
 	// Attempt to reach the URL with retries
@@ -47,12 +55,12 @@ func validateURL(url string) error {
 		}
 
 		if err != nil {
-			log.Printf("Attempt %d: Failed to reach %s, error: %v", attempt, url, err)
+			slog.Error("Failed to reach", "URL", url, "Attempt", attempt, slog.Any("Error", err))
 			if attempt < retryConfig.limit {
 				time.Sleep(time.Duration(retryConfig.delay) * time.Second)
 			}
 		} else {
-			log.Printf("Successfully reached %s on attempt %d", url, attempt)
+			slog.Info("Successfully reached", "URL", url, "Attempt:", attempt)
 			return nil
 		}
 	}

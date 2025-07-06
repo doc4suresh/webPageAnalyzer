@@ -1,7 +1,7 @@
 package server
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
 
 	"github.com/doc4suresh/webPageAnalyzer/internal/service"
@@ -17,25 +17,27 @@ func analyzeHandler(ctx *gin.Context) {
 	url := ctx.Query("url")
 
 	if url == "" {
-		log.Print("Missing 'url' query parameter")
+		slog.Error("Missing 'url' query parameter")
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Missing 'url' query parameter"})
 		return
 	}
 
 	if !util.ValidateURL(url) {
-		log.Print("Invalid URL format")
+		slog.Error("Invalid URL format:", "URL", url)
+
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Invalid URL format\n" +
 			"Please provide a valid URL like\n" +
 			"https://www.example.com\n" +
 			"or\n" +
 			"http://www.example.com"})
+
 		return
 	}
 
 	// Call the scraper service
 	info, err := service.Scrape(url)
 	if err != nil {
-		log.Printf("Error analyzing URL %s: %v", url, err)
+		slog.Error("Error analyzing", "URL", url, slog.Any("Error", err))
 
 		// Handle different types of errors with appropriate HTTP status codes
 		if contains(err.Error(), "access forbidden") || contains(err.Error(), "403") {

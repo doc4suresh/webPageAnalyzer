@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"log/slog"
 
 	"github.com/doc4suresh/webPageAnalyzer/internal/server"
 	"github.com/joho/godotenv"
@@ -9,10 +9,10 @@ import (
 
 func main() {
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("No .env file found")
+		slog.Error("No .env file found, using environment variables")
 	}
 
 	if err := server.Run(); err != nil {
-		log.Fatalf("Failed to start the server: %v", err)
+		slog.Error("Failed to start the server", slog.Any("Error", err))
 	}
 }
