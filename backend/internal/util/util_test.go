@@ -3,7 +3,7 @@ package util
 import "testing"
 
 func TestValidateURL(t *testing.T) {
-	testURLs := []struct {
+	tests := []struct {
 		name     string
 		rawurl   string
 		expected bool
@@ -13,7 +13,7 @@ func TestValidateURL(t *testing.T) {
 		{"Empty URL", "", false},
 	}
 
-	for _, tt := range testURLs {
+	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := ValidateURL(tt.rawurl)
 			if result != tt.expected {
